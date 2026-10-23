@@ -1,7 +1,12 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../repositories/auth_repository.dart';
+import '../view/startup/startup_view.dart';
+import '../view/tabs/business/business_view.dart';
+import '../view/tabs/business/business_module.dart';
+import '../view/tabs/business/imports_view.dart';
 import '../view/auth/login/login_view.dart';
 import '../view/tabs/activities/activities_view.dart';
 import '../view/tabs/ai_assistant/assistant_view.dart';
@@ -21,10 +26,26 @@ import '../view/tabs/targets/targets_view.dart';
 import '../view/tabs/team/team_view.dart';
 
 class RouteGenerator {
-  static GoRouter createRouter(AuthRepository authRepo) {
+  static GoRouter createRouter(AuthRepository authRepo, {AppStartup? startup}) {
     return GoRouter(
-      initialLocation: '/dashboard',
+      initialLocation: startup == null ? '/dashboard' : '/splash',
+      refreshListenable: startup,
       redirect: (context, state) {
+        if (startup != null && !startup.ready) {
+          return state.matchedLocation == '/splash' ? null : '/splash';
+        }
+        if (startup != null &&
+            !startup.onboardingSeen &&
+            !authRepo.isSignedIn &&
+            !authRepo.isPreviewMode) {
+          return state.matchedLocation == '/onboarding' ? null : '/onboarding';
+        }
+        if (state.matchedLocation == '/splash' ||
+            state.matchedLocation == '/onboarding') {
+          return authRepo.isSignedIn || authRepo.isPreviewMode
+              ? '/dashboard'
+              : '/login';
+        }
         final signedIn = authRepo.isSignedIn || authRepo.isPreviewMode;
         final onLogin = state.matchedLocation == '/login';
 
@@ -37,10 +58,23 @@ class RouteGenerator {
         return null;
       },
       routes: [
+        for (final module in BusinessModule.values)
+          GoRoute(
+            path: module.route,
+            builder: (_, _) => BusinessView(module: module),
+          ),
+        GoRoute(path: '/cash-and-bank', redirect: (_, _) => '/cash-bank'),
+        GoRoute(path: '/imports', builder: (_, _) => const ImportsView()),
+        GoRoute(path: '/splash', builder: (_, _) => const SplashView()),
         GoRoute(
-          path: '/login',
-          builder: (context, state) => const LoginView(),
+          path: '/onboarding',
+          builder: (_, _) => OnboardingView(
+            onContinue: () async {
+              await startup?.finishOnboarding();
+            },
+          ),
         ),
+        GoRoute(path: '/login', builder: (context, state) => const LoginView()),
         GoRoute(
           path: '/dashboard',
           builder: (context, state) => const DashboardView(),
@@ -91,10 +125,7 @@ class RouteGenerator {
           path: '/activities',
           builder: (context, state) => const ActivitiesView(),
         ),
-        GoRoute(
-          path: '/team',
-          builder: (context, state) => const TeamView(),
-        ),
+        GoRoute(path: '/team', builder: (context, state) => const TeamView()),
         GoRoute(
           path: '/assistant',
           builder: (context, state) => const AssistantView(),
@@ -112,11 +143,8 @@ class RouteGenerator {
           builder: (context, state) => const NotificationsView(),
         ),
       ],
-      errorBuilder: (context, state) => Scaffold(
-        body: Center(
-          child: Text('Route not found: ${state.uri}'),
-        ),
-      ),
+      errorBuilder: (context, state) =>
+          Scaffold(body: Center(child: Text('Route not found: ${state.uri}'))),
     );
   }
 }

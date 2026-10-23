@@ -25,7 +25,7 @@ class AssistantViewModel extends BaseViewModel {
 
   final List<ChatMessage> _messages = [
     ChatMessage(
-      text: 'Salam! I am your AW CRM AI Assistant. You can ask me questions about your sales, orders, receivables, and inventory in English, Urdu, or Roman Urdu.',
+      text: 'Salam! I am your AWC AI Assistant. You can ask me questions about your sales, orders, receivables, and inventory in English, Urdu, or Roman Urdu.',
       isUser: false,
       time: DateTime.now().subtract(const Duration(minutes: 1)),
     ),

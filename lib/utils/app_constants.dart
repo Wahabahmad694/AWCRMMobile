@@ -1,7 +1,7 @@
 class AppConstants {
   AppConstants._();
 
-  static const String appName = 'AW CRM';
+  static const String appName = 'AWC';
   static const String appTagline = 'Built for your next chapter';
   static const String workspaceSubtitle = 'Business workspace';
   static const String currencyCode = 'PKR';

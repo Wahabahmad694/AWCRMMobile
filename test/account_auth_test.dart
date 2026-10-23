@@ -256,7 +256,7 @@ void main() {
       );
 
       // Initially on Sign in view
-      expect(find.text('Welcome to AW CRM'), findsOneWidget);
+      expect(find.text('Welcome to AWC'), findsOneWidget);
       expect(find.text('Email or phone'), findsOneWidget);
       expect(find.text('Register'), findsOneWidget);
 
@@ -271,7 +271,7 @@ void main() {
       // Switch back to Sign in
       await tester.tap(find.text('Sign in'));
       await tester.pumpAndSettle();
-      expect(find.text('Welcome to AW CRM'), findsOneWidget);
+      expect(find.text('Welcome to AWC'), findsOneWidget);
 
       // Tap Forgot password
       await tester.tap(find.text('Forgot password?'));

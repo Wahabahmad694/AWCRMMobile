@@ -34,7 +34,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                     child: const Text(
-                      'AW',
+                      'AWC',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w800,
@@ -51,7 +51,7 @@ class AppDrawer extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'AW CRM',
+                              'AWC',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w800,
@@ -148,6 +148,9 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   _groupCaption('WORKSPACE'),
                   _navItem(context, 'Dashboard', '/dashboard', Icons.dashboard_outlined),
+                  _navItem(context, 'Leads', '/leads', Icons.view_kanban_outlined),
+                  _navItem(context, 'Quotations', '/quotations', Icons.description_outlined),
+                  _navItem(context, 'Returns', '/returns', Icons.assignment_return_outlined),
                   _navItem(context, 'Customers', '/customers', Icons.people_outline),
                   _navItem(context, 'Orders', '/orders', Icons.shopping_bag_outlined),
                   _navItem(context, 'Products', '/products', Icons.inventory_2_outlined),
@@ -156,6 +159,8 @@ class AppDrawer extends StatelessWidget {
                   const SizedBox(height: 12),
                   _groupCaption('BUSINESS'),
                   _navItem(context, 'Payments', '/payments', Icons.account_balance_wallet_outlined),
+                  _navItem(context, 'Credit notes', '/credit-notes', Icons.receipt_outlined),
+                  _navItem(context, 'Cash and bank', '/cash-bank', Icons.account_balance_outlined),
                   _navItem(context, 'Sales targets', '/targets', Icons.track_changes_outlined),
                   _navItem(context, 'Expenses', '/expenses', Icons.receipt_long_outlined),
                   _navItem(context, 'Reports', '/reports', Icons.bar_chart_outlined),
@@ -165,6 +170,7 @@ class AppDrawer extends StatelessWidget {
                   _navItem(context, 'Activities', '/activities', Icons.checklist_outlined),
                   _navItem(context, 'Team', '/team', Icons.manage_accounts_outlined),
                   _navItem(context, 'AI Assistant', '/assistant', Icons.auto_awesome_outlined, isAi: true),
+                  _navItem(context, 'Imports', '/imports', Icons.upload_file_outlined),
                   _navItem(context, 'Settings', '/settings', Icons.settings_outlined),
                 ],
               ),
@@ -236,7 +242,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      authRepo.currentUser != null ? authRepo.currentUser!.name.substring(0, 1).toUpperCase() : 'AW',
+                      authRepo.currentUser != null ? authRepo.currentUser!.name.substring(0, 1).toUpperCase() : 'AWC',
                       style: const TextStyle(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w800,
@@ -250,7 +256,7 @@ class AppDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          authRepo.currentUser?.name ?? 'AW CRM',
+                          authRepo.currentUser?.name ?? 'AWC',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,

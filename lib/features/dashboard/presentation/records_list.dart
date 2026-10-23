@@ -89,7 +89,9 @@ class _RecordsListState extends State<RecordsList> {
             }
             final item = items[index];
             if (item is! Map) { return const SizedBox.shrink(); }
-            final label = item['name'] ?? item['order_number'] ?? item['reference'] ?? item['id'];
+            final label = item['name'] ?? item['title'] ?? item['quotation_number'] ??
+                item['return_number'] ?? item['credit_note_number'] ??
+                item['order_number'] ?? item['reference'] ?? item['id'];
             return Card(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               child: ListTile(title: Text(label?.toString() ?? 'Record'),
                 subtitle: Text(_subtitle(item)), isThreeLine: false));
@@ -101,7 +103,8 @@ class _RecordsListState extends State<RecordsList> {
 
   String _subtitle(Map item) {
     final values = <String>[];
-    for (final key in ['phone', 'city', 'status', 'payment_status', 'date']) {
+    for (final key in ['phone', 'city', 'account_type', 'type', 'status',
+      'payment_status', 'date']) {
       final value = item[key];
       if (value != null && value.toString().isNotEmpty) values.add(value.toString());
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../../../utils/app_colors.dart';
 import 'login_vm.dart';
 
@@ -11,7 +12,8 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMixin {
+class _LoginViewState extends State<LoginView>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final _loginFormKey = GlobalKey<FormState>();
   final _registerFormKey = GlobalKey<FormState>();
@@ -85,7 +87,7 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                                   ),
                                   alignment: Alignment.center,
                                   child: const Text(
-                                    'AW',
+                                    'AWC',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w800,
@@ -95,26 +97,29 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                                   ),
                                 ),
                                 const SizedBox(width: 12),
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'AW CRM',
-                                      style: TextStyle(
-                                        color: AppColors.textPrimary,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 20,
-                                        letterSpacing: -0.5,
+                                const Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'AWC',
+                                        style: TextStyle(
+                                          color: AppColors.textPrimary,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 20,
+                                          letterSpacing: -0.5,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      'Built for your next chapter',
-                                      style: TextStyle(
-                                        color: AppColors.textSecondary,
-                                        fontSize: 12,
+                                      Text(
+                                        'Built for your next chapter',
+                                        style: TextStyle(
+                                          color: AppColors.textSecondary,
+                                          fontSize: 12,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -144,7 +149,10 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                               ),
                               labelColor: AppColors.primary,
                               unselectedLabelColor: AppColors.textSecondary,
-                              labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                              labelStyle: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                              ),
                               indicatorSize: TabBarIndicatorSize.tab,
                               dividerColor: Colors.transparent,
                               tabs: const [
@@ -164,16 +172,27 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                               decoration: BoxDecoration(
                                 color: AppColors.redIconBg,
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: AppColors.redIcon.withValues(alpha: 0.3)),
+                                border: Border.all(
+                                  color: AppColors.redIcon.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                ),
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.error_outline_rounded, color: AppColors.redIcon, size: 18),
+                                  const Icon(
+                                    Icons.error_outline_rounded,
+                                    color: AppColors.redIcon,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       vm.errorMessage!,
-                                      style: const TextStyle(color: AppColors.redIcon, fontSize: 12),
+                                      style: const TextStyle(
+                                        color: AppColors.redIcon,
+                                        fontSize: 12,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -230,7 +249,9 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
               prefixIcon: const Icon(Icons.lock_outline, size: 20),
               suffixIcon: IconButton(
                 icon: Icon(
-                  vm.isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                  vm.isPasswordVisible
+                      ? Icons.visibility_off
+                      : Icons.visibility,
                   size: 20,
                   color: AppColors.textMuted,
                 ),
@@ -243,7 +264,10 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () => _showForgotPasswordDialog(context, vm),
-              child: const Text('Forgot password?', style: TextStyle(fontSize: 12)),
+              child: const Text(
+                'Forgot password?',
+                style: TextStyle(fontSize: 12),
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -264,7 +288,10 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                 ? const SizedBox(
                     width: 20,
                     height: 20,
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
                   )
                 : const Text('Sign in to Workspace'),
           ),
@@ -282,34 +309,53 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
           children: [
             TextFormField(
               controller: _regNameController,
-              decoration: const InputDecoration(labelText: 'Full name', prefixIcon: Icon(Icons.person_outline, size: 20)),
-              validator: (v) => v == null || v.trim().isEmpty ? 'Required' : null,
+              decoration: const InputDecoration(
+                labelText: 'Full name',
+                prefixIcon: Icon(Icons.person_outline, size: 20),
+              ),
+              validator: (v) =>
+                  v == null || v.trim().isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _regEmailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.mail_outline, size: 20)),
-              validator: (v) => v == null || !v.contains('@') ? 'Valid email required' : null,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                prefixIcon: Icon(Icons.mail_outline, size: 20),
+              ),
+              validator: (v) =>
+                  v == null || !v.contains('@') ? 'Valid email required' : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _regPhoneController,
               keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(labelText: 'Phone (optional)', prefixIcon: Icon(Icons.phone_outlined, size: 20)),
+              decoration: const InputDecoration(
+                labelText: 'Phone (optional)',
+                prefixIcon: Icon(Icons.phone_outlined, size: 20),
+              ),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _regOrgController,
-              decoration: const InputDecoration(labelText: 'Business name', prefixIcon: Icon(Icons.business_outlined, size: 20)),
-              validator: (v) => v == null || v.trim().isEmpty ? 'Required' : null,
+              decoration: const InputDecoration(
+                labelText: 'Business name',
+                prefixIcon: Icon(Icons.business_outlined, size: 20),
+              ),
+              validator: (v) =>
+                  v == null || v.trim().isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _regPasswordController,
               obscureText: !vm.isPasswordVisible,
-              decoration: const InputDecoration(labelText: 'Password', prefixIcon: Icon(Icons.lock_outline, size: 20)),
-              validator: (v) => v == null || v.length < 6 ? 'At least 6 characters' : null,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                prefixIcon: Icon(Icons.lock_outline, size: 20),
+              ),
+              validator: (v) =>
+                  v == null || v.length < 6 ? 'At least 6 characters' : null,
             ),
             const SizedBox(height: 18),
             ElevatedButton(
@@ -332,7 +378,10 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                   ? const SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
                     )
                   : const Text('Create Workspace Account'),
             ),
@@ -364,14 +413,18 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
             onPressed: () async {
               if (controller.text.trim().isEmpty) return;
               Navigator.pop(dialogContext);
               final msg = await vm.forgotPassword(controller.text);
               if (msg != null && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(msg)));
               }
             },
             child: const Text('Send Reset Link'),

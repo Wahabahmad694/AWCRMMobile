@@ -72,7 +72,7 @@ class _SettingsViewState extends State<SettingsView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              vm.user?.name ?? 'AW CRM User',
+                              vm.user?.name ?? 'AWC User',
                               style: const TextStyle(
                                 color: AppColors.textPrimary,
                                 fontWeight: FontWeight.w800,

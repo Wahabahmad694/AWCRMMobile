@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16),
                       Text(
                         switch (currentView) {
-                          AuthView.signIn => 'Welcome to AW CRM',
+                          AuthView.signIn => 'Welcome to AWC',
                           AuthView.register => 'Create Account',
                           AuthView.forgotPassword => 'Forgot Password',
                           AuthView.resetPassword => 'Reset Password',

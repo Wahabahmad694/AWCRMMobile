@@ -9,24 +9,38 @@ import 'live_dashboard.dart';
 import 'records_list.dart';
 
 // Navigation only exposes screens that have a real data path or an explicit unavailable state.
-enum WorkspaceSection { dashboard, assistant, customers, orders, payments, account }
+enum WorkspaceSection { dashboard, leads, quotations, returns, customers, orders, payments, creditNotes, cashAndBank, assistant, account }
 
 extension SectionInfo on WorkspaceSection {
   String get title => switch (this) {
     WorkspaceSection.dashboard => 'Overview',
+    WorkspaceSection.leads => 'Leads',
+    WorkspaceSection.quotations => 'Quotations',
+    WorkspaceSection.returns => 'Returns',
     WorkspaceSection.assistant => 'AI assistant',
     WorkspaceSection.customers => 'Customers',
     WorkspaceSection.orders => 'Orders',
     WorkspaceSection.payments => 'Payments',
+    WorkspaceSection.creditNotes => 'Credit notes',
+    WorkspaceSection.cashAndBank => 'Cash and bank',
     WorkspaceSection.account => 'Account',
   };
-  String get path => '/$name';
+  String get path => switch (this) {
+    WorkspaceSection.creditNotes => '/credit-notes',
+    WorkspaceSection.cashAndBank => '/cash-and-bank',
+    _ => '/$name',
+  };
   IconData get icon => switch (this) {
     WorkspaceSection.dashboard => Icons.dashboard_outlined,
+    WorkspaceSection.leads => Icons.view_kanban_outlined,
+    WorkspaceSection.quotations => Icons.description_outlined,
+    WorkspaceSection.returns => Icons.keyboard_return_outlined,
     WorkspaceSection.assistant => Icons.auto_awesome_outlined,
     WorkspaceSection.customers => Icons.people_outline,
     WorkspaceSection.orders => Icons.receipt_long_outlined,
     WorkspaceSection.payments => Icons.account_balance_wallet_outlined,
+    WorkspaceSection.creditNotes => Icons.note_outlined,
+    WorkspaceSection.cashAndBank => Icons.account_balance_outlined,
     WorkspaceSection.account => Icons.person_outline,
   };
 }
@@ -44,6 +58,10 @@ class WorkspacePage extends StatelessWidget {
     final nav = WorkspaceSection.values;
     return Scaffold(
       appBar: AppBar(
+        leading: desktop ? null : Builder(builder: (context) => IconButton(
+          tooltip: 'Open navigation', icon: const Icon(Icons.menu),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+        )),
         title: Row(children: [
           if (!mobile) const Icon(Icons.business_center_rounded, size: 24),
           if (!mobile) const SizedBox(width: 12),
@@ -92,11 +110,12 @@ class WorkspacePage extends StatelessWidget {
           const SizedBox(width: 8),
         ],
       ),
-      drawer: desktop ? null : (mobile ? null : Drawer(child: _navList(context, nav))),
+      drawer: desktop ? null : Drawer(child: _navList(context, nav)),
       bottomNavigationBar: mobile ? NavigationBar(
-        selectedIndex: section.index,
-        onDestinationSelected: (index) => context.go(nav[index].path),
-        destinations: [for (final item in nav) NavigationDestination(icon: Icon(item.icon), label: item.title)],
+        selectedIndex: ![WorkspaceSection.dashboard, WorkspaceSection.leads, WorkspaceSection.orders, WorkspaceSection.account].contains(section)
+            ? 0 : [WorkspaceSection.dashboard, WorkspaceSection.leads, WorkspaceSection.orders, WorkspaceSection.account].indexOf(section),
+        onDestinationSelected: (index) => context.go([WorkspaceSection.dashboard, WorkspaceSection.leads, WorkspaceSection.orders, WorkspaceSection.account][index].path),
+        destinations: [for (final item in [WorkspaceSection.dashboard, WorkspaceSection.leads, WorkspaceSection.orders, WorkspaceSection.account]) NavigationDestination(icon: Icon(item.icon), label: item.title)],
       ) : null,
       body: Column(
         children: [
@@ -128,18 +147,17 @@ class WorkspacePage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
                 child: _navList(context, nav),
               )),
-              if (!mobile && !desktop) NavigationRail(
-                selectedIndex: section.index,
-                onDestinationSelected: (index) => context.go(nav[index].path),
-                labelType: NavigationRailLabelType.all,
-                destinations: [for (final item in nav) NavigationRailDestination(icon: Icon(item.icon), label: Text(item.title))],
-              ),
               Expanded(child: switch (section) {
                 WorkspaceSection.dashboard => const LiveDashboard(),
+                WorkspaceSection.leads => const RecordsList(resource: 'leads', title: 'Leads'),
+                WorkspaceSection.quotations => const RecordsList(resource: 'quotations', title: 'Quotations'),
+                WorkspaceSection.returns => const RecordsList(resource: 'returns', title: 'Returns'),
                 WorkspaceSection.assistant => const AssistantPage(),
                 WorkspaceSection.customers => const RecordsList(resource: 'customers', title: 'Customers'),
                 WorkspaceSection.orders => const RecordsList(resource: 'orders', title: 'Orders'),
                 WorkspaceSection.payments => const RecordsList(resource: 'payments', title: 'Payments'),
+                WorkspaceSection.creditNotes => const RecordsList(resource: 'credit-notes', title: 'Credit notes'),
+                WorkspaceSection.cashAndBank => const RecordsList(resource: 'payment-accounts', title: 'Cash and bank'),
                 WorkspaceSection.account => const AccountPage(),
               }),
             ]),
@@ -151,7 +169,7 @@ class WorkspacePage extends StatelessWidget {
 
   Widget _navList(BuildContext context, List<WorkspaceSection> nav) => SafeArea(
     child: ListView(padding: const EdgeInsets.all(16), children: [
-      const ListTile(title: Text('AW CRM', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20))),
+      const ListTile(title: Text('AWC', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20))),
       const SizedBox(height: 16),
       for (final item in nav) Padding(padding: const EdgeInsets.only(bottom: 4),
         child: ListTile(

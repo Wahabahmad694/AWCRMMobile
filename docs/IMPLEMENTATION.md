@@ -1,6 +1,6 @@
-# AW CRM implementation status
+# AWC implementation status
 
-The supplied Flutter integration guide is the current client contract. The full `API_CONTRACT.md`, `ERROR_HANDLING.md` and `/api/docs` schemas were not included in this workspace; `/api/docs` could not be opened from this environment. Model fields beyond the pasted examples need verification against that full contract.
+The missing business modules use the public Swagger contract at https://aw-crm-mu.vercel.app/api/docs/openapi.json, inspected on 2026-10-24. The running app starts from `lib/main.dart` and uses `RouteGenerator`, `AuthRepository`, and `AppDrawer`; `lib/app/app.dart` is an older, separate entry point.
 
 ## Integrated foundation
 
@@ -36,3 +36,18 @@ For local web: `flutter run -d chrome --web-port 5000 --dart-define=API_URL=http
 For Android emulator: `flutter run --dart-define=API_URL=http://10.0.2.2:3000/api/v1`.
 
 The UI preview button remains available without a backend. Preview is clearly labeled and does not show fabricated business data.
+
+
+## AWC launch and business modules
+
+- Display name changed to AWC on mobile, desktop, and web. Package IDs and existing authentication storage keys are retained.
+- The animated line splash restores the session while it plays. First-time signed-out users see one onboarding screen, then login. The onboarding flag survives sign-out; returning authenticated users go to their workspace.
+- The active drawer includes Leads, Quotations, Returns, Credit notes, Cash and bank, and Imports.
+- Leads: paginated search, source filters, details, create/edit, stage movement, conversion, archive/restore.
+- Quotations: status filters, details, customer/lead selection, product or custom lines, dates, discounts/tax, create/edit, send/accept/reject, conversion, duplication.
+- Returns: status filters, fulfilled-order selection, returnable quantities, reason/restocking/resolution, draft creation, completion and cancellation.
+- Credit notes: status filters, details and applications, credit application to customer orders, voiding unused notes with a reason.
+- Cash and bank: balances, account creation/editing, activation, paginated account book, transfer recording/history and dated daily summary.
+- Imports has an explicit unavailable screen: the published Swagger contract has no import endpoints. No upload is sent to a guessed endpoint.
+- New forms preserve their inputs after errors, send integer paisa amounts, use current record versions where required, and reuse an idempotency key for retries with unchanged payloads.
+- Automated coverage uses mocked API responses; authenticated production mutations have not been exercised.

@@ -12,18 +12,18 @@ class UserProfile {
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
-        id: json['id']?.toString() ?? '',
-        name: json['name']?.toString() ?? 'User',
-        email: json['email']?.toString() ?? '',
-        phone: json['phone']?.toString(),
-      );
+    id: json['id']?.toString() ?? '',
+    name: json['name']?.toString() ?? 'User',
+    email: json['email']?.toString() ?? '',
+    phone: json['phone']?.toString(),
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'email': email,
-        'phone': phone,
-      };
+    'id': id,
+    'name': name,
+    'email': email,
+    'phone': phone,
+  };
 }
 
 class Membership {
@@ -41,16 +41,33 @@ class Membership {
     this.subscriptionStatus,
   });
 
+  Map<String, dynamic> toJson() => {
+    'organization_id': organizationId,
+    'name': name,
+    'permissions': permissions.toList(),
+    if (role != null) 'role': role,
+    if (subscriptionStatus != null) 'subscription_status': subscriptionStatus,
+  };
+
   factory Membership.fromJson(Map<String, dynamic> json) {
-    final organization = json['organization'] is Map ? json['organization'] as Map : const {};
+    final organization = json['organization'] is Map
+        ? json['organization'] as Map
+        : const {};
     final id = json['organization_id'] ?? organization['id'];
     final perms = json['permissions'];
     return Membership(
       organizationId: id?.toString() ?? '',
-      name: organization['name']?.toString() ?? json['name']?.toString() ?? 'Organization',
-      permissions: perms is List ? perms.whereType<String>().toSet() : <String>{},
+      name:
+          organization['name']?.toString() ??
+          json['name']?.toString() ??
+          'Organization',
+      permissions: perms is List
+          ? perms.whereType<String>().toSet()
+          : <String>{},
       role: json['role']?.toString(),
-      subscriptionStatus: organization['subscription_status']?.toString() ?? json['subscription_status']?.toString(),
+      subscriptionStatus:
+          organization['subscription_status']?.toString() ??
+          json['subscription_status']?.toString(),
     );
   }
 }
@@ -69,8 +86,15 @@ class AuthResult {
   });
 
   factory AuthResult.fromJson(Map<String, dynamic> json) {
-    final userJson = json['user'] is Map ? Map<String, dynamic>.from(json['user'] as Map) : <String, dynamic>{};
-    final memberList = json['memberships'] is List ? (json['memberships'] as List).whereType<Map>().map((m) => Membership.fromJson(Map<String, dynamic>.from(m))).toList() : <Membership>[];
+    final userJson = json['user'] is Map
+        ? Map<String, dynamic>.from(json['user'] as Map)
+        : <String, dynamic>{};
+    final memberList = json['memberships'] is List
+        ? (json['memberships'] as List)
+              .whereType<Map>()
+              .map((m) => Membership.fromJson(Map<String, dynamic>.from(m)))
+              .toList()
+        : <Membership>[];
     return AuthResult(
       accessToken: json['access_token']?.toString() ?? '',
       refreshToken: json['refresh_token']?.toString() ?? '',

@@ -39,10 +39,15 @@ class _CrmAppState extends State<CrmApp> {
         GoRoute(path: '/loading', builder: (_, _) => const Scaffold(body: Center(child: CircularProgressIndicator()))),
         GoRoute(path: '/login', builder: (_, _) => const LoginPage()),
         GoRoute(path: '/dashboard', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.dashboard)),
+        GoRoute(path: '/leads', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.leads)),
+        GoRoute(path: '/quotations', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.quotations)),
+        GoRoute(path: '/returns', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.returns)),
         GoRoute(path: '/assistant', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.assistant)),
         GoRoute(path: '/customers', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.customers)),
         GoRoute(path: '/orders', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.orders)),
         GoRoute(path: '/payments', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.payments)),
+        GoRoute(path: '/credit-notes', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.creditNotes)),
+        GoRoute(path: '/cash-and-bank', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.cashAndBank)),
         GoRoute(path: '/account', builder: (_, _) => const WorkspacePage(section: WorkspaceSection.account)),
       ],
     );
@@ -61,7 +66,7 @@ class _CrmAppState extends State<CrmApp> {
   Widget build(BuildContext context) => ChangeNotifierProvider.value(
     value: session,
     child: MaterialApp.router(
-      title: 'AW CRM',
+      title: 'AWC',
       debugShowCheckedModeBanner: false,
       theme: appTheme(Brightness.light),
       darkTheme: appTheme(Brightness.dark),

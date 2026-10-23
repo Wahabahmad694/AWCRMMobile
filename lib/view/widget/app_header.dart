@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../utils/app_colors.dart';
 import '../../utils/string_helpers.dart';
 
@@ -38,14 +39,22 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               // Left: Back button or Hamburger menu
               if (showBackButton)
                 IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: AppColors.textPrimary),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    size: 20,
+                    color: AppColors.textPrimary,
+                  ),
                   onPressed: () => Navigator.of(context).maybePop(),
                   tooltip: 'Back',
                 )
               else
                 Builder(
                   builder: (scaffoldContext) => IconButton(
-                    icon: const Icon(Icons.menu_rounded, size: 24, color: AppColors.textPrimary),
+                    icon: const Icon(
+                      Icons.menu_rounded,
+                      size: 24,
+                      color: AppColors.textPrimary,
+                    ),
                     onPressed: () => Scaffold.of(scaffoldContext).openDrawer(),
                     tooltip: 'Menu',
                   ),
@@ -58,17 +67,23 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Workspace',
-                      style: TextStyle(
-                        color: AppColors.textMuted,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    if (MediaQuery.sizeOf(context).width >= 500) ...[
+                      const Text(
+                        'Workspace',
+                        style: TextStyle(
+                          color: AppColors.textMuted,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(Icons.chevron_right_rounded, size: 14, color: AppColors.textMuted),
-                    const SizedBox(width: 4),
+                      const SizedBox(width: 4),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        size: 14,
+                        color: AppColors.textMuted,
+                      ),
+                      const SizedBox(width: 4),
+                    ],
                     Flexible(
                       child: Text(
                         title,
@@ -89,10 +104,14 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: isSignedIn ? AppColors.connectedPillBg : AppColors.pillBg,
+                  color: isSignedIn
+                      ? AppColors.connectedPillBg
+                      : AppColors.pillBg,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: isSignedIn ? AppColors.connectedPillBorder : AppColors.pillBorder,
+                    color: isSignedIn
+                        ? AppColors.connectedPillBorder
+                        : AppColors.pillBorder,
                     width: 1,
                   ),
                 ),
@@ -103,7 +122,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: isSignedIn ? AppColors.connectedPillDot : AppColors.pillDot,
+                        color: isSignedIn
+                            ? AppColors.connectedPillDot
+                            : AppColors.pillDot,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -111,7 +132,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                     Text(
                       isSignedIn ? 'Live' : 'Preview',
                       style: TextStyle(
-                        color: isSignedIn ? AppColors.connectedPillText : AppColors.pillText,
+                        color: isSignedIn
+                            ? AppColors.connectedPillText
+                            : AppColors.pillText,
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                       ),
@@ -140,10 +163,17 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                 clipBehavior: Clip.none,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.notifications_outlined, size: 20, color: AppColors.textSecondary),
+                    icon: const Icon(
+                      Icons.notifications_outlined,
+                      size: 20,
+                      color: AppColors.textSecondary,
+                    ),
                     onPressed: () => context.push('/notifications'),
                     tooltip: 'Notifications',
-                    constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                    constraints: const BoxConstraints(
+                      minWidth: 32,
+                      minHeight: 32,
+                    ),
                     padding: EdgeInsets.zero,
                   ),
                   if (unreadNotifications > 0)
@@ -156,9 +186,14 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                           color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
-                        constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
+                        constraints: const BoxConstraints(
+                          minWidth: 14,
+                          minHeight: 14,
+                        ),
                         child: Text(
-                          unreadNotifications > 9 ? '9+' : unreadNotifications.toString(),
+                          unreadNotifications > 9
+                              ? '9+'
+                              : unreadNotifications.toString(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 9,
